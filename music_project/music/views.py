@@ -38,6 +38,11 @@ class SongDetail(APIView):
     def put(self, request, pk):
         song = self.get_object(pk)
         serializer = SongSerializer(song, data=request.data)
+        try:
+            if request.query_params['like']:
+                song.likes = song.likes + 1
+        except:
+            pass
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
